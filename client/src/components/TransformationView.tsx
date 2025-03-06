@@ -46,12 +46,12 @@ export function TransformationView({ analysis }: TransformationViewProps) {
         <TabsContent value="explanation">
           <Card className="p-4">
             <h3 className="text-lg font-semibold mb-2">Changes Made</h3>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground mb-4 whitespace-pre-wrap">
               {analysis.analysis.explanation}
             </p>
 
             <h3 className="text-lg font-semibold mb-2">Suggested Improvements</h3>
-            <ul className="list-disc pl-6">
+            <ul className="list-disc pl-6 space-y-2">
               {analysis.analysis.suggestedImprovements.map((suggestion: string, index: number) => (
                 <li key={index} className="text-muted-foreground">
                   {suggestion}

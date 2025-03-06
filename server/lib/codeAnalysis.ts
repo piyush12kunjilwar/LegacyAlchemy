@@ -13,13 +13,26 @@ export interface CodeAnalysisResult {
 
 function getMockAnalysis(code: string, language: string, framework: string): CodeAnalysisResult {
   return {
-    modernizedCode: `// Modernized ${language} code for ${framework}\n// This is a mock response for development\n${code}`,
-    explanation: "This is a mock analysis response for development purposes. In production, this would contain detailed explanations of the modernization changes.",
+    modernizedCode: `// Modernized ${language} code for ${framework}
+// This is a mock response for development
+${code}
+
+// Added modern features:
+// - ES6+ syntax
+// - Async/await
+// - Type safety`,
+    explanation: `Converted ${language} code to ${framework} with modern best practices:
+- Updated syntax to latest standards
+- Added type definitions
+- Improved error handling
+- Enhanced code organization`,
     score: 85,
     suggestedImprovements: [
       "Consider using more modern syntax features",
       "Implement proper error handling",
-      "Add comprehensive documentation"
+      "Add comprehensive documentation",
+      "Consider adding unit tests",
+      "Optimize performance with memoization"
     ]
   };
 }
