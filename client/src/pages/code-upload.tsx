@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CodeEditor } from "@/components/CodeEditor";
+import { TransformationView } from "@/components/TransformationView"; // Added import
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +51,7 @@ export default function CodeUpload() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,7 +75,7 @@ export default function CodeUpload() {
         title: "Analysis Complete!",
         description: `Earned ${data.pointsEarned} points for this transformation.`,
       });
-      navigate("/");
+      setAnalysisResult(data.analysis);
     },
     onError: (error) => {
       const message = error.message.includes("quota exceeded")
@@ -95,6 +97,19 @@ export default function CodeUpload() {
     } finally {
       setIsAnalyzing(false);
     }
+  }
+
+  if (analysisResult) {
+    return (
+      <div className="container mx-auto py-8 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-end mb-4">
+            <Button onClick={() => navigate("/")}>Return to Dashboard</Button>
+          </div>
+          <TransformationView analysis={analysisResult} />
+        </div>
+      </div>
+    );
   }
 
   return (
