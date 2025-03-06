@@ -11,11 +11,29 @@ export interface CodeAnalysisResult {
   suggestedImprovements: string[];
 }
 
+function getMockAnalysis(code: string, language: string, framework: string): CodeAnalysisResult {
+  return {
+    modernizedCode: `// Modernized ${language} code for ${framework}\n// This is a mock response for development\n${code}`,
+    explanation: "This is a mock analysis response for development purposes. In production, this would contain detailed explanations of the modernization changes.",
+    score: 85,
+    suggestedImprovements: [
+      "Consider using more modern syntax features",
+      "Implement proper error handling",
+      "Add comprehensive documentation"
+    ]
+  };
+}
+
 export async function analyzeCode(
   code: string,
   sourceLanguage: string,
   targetFramework: string
 ): Promise<CodeAnalysisResult> {
+  // If MOCK_ANALYSIS env var is set, return mock results
+  if (process.env.MOCK_ANALYSIS === "true") {
+    return getMockAnalysis(code, sourceLanguage, targetFramework);
+  }
+
   const prompt = `
     Analyze and modernize the following code:
 
