@@ -48,7 +48,13 @@ export async function analyzeCode(
     const result = JSON.parse(content) as CodeAnalysisResult;
     return result;
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    let errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+
+    // Check for rate limit or quota errors
+    if (errorMessage.includes("429") || errorMessage.includes("quota")) {
+      errorMessage = "OpenAI API quota exceeded. Please try again later or contact support to upgrade your plan.";
+    }
+
     throw new Error(`Failed to analyze code: ${errorMessage}`);
   }
 }

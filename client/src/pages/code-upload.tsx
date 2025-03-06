@@ -76,10 +76,14 @@ export default function CodeUpload() {
       navigate("/");
     },
     onError: (error) => {
+      const message = error.message.includes("quota exceeded")
+        ? "OpenAI API quota exceeded. Please try again later."
+        : error.message;
+
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: message,
       });
     },
   });
