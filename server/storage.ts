@@ -9,10 +9,10 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUserPoints(userId: number, points: number): Promise<User>;
-  
+
   createCodeAnalysis(analysis: InsertCodeAnalysis): Promise<CodeAnalysis>;
   getCodeAnalysisByUser(userId: number): Promise<CodeAnalysis[]>;
-  
+
   createAchievement(achievement: InsertAchievement): Promise<Achievement>;
   getAchievementsByUser(userId: number): Promise<Achievement[]>;
 }
@@ -28,6 +28,12 @@ export class MemStorage implements IStorage {
     this.codeAnalyses = new Map();
     this.achievements = new Map();
     this.currentId = { users: 1, codeAnalyses: 1, achievements: 1 };
+
+    // Create a default test user
+    this.createUser({
+      username: "test",
+      password: "test123"
+    });
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -50,7 +56,7 @@ export class MemStorage implements IStorage {
   async updateUserPoints(userId: number, points: number): Promise<User> {
     const user = await this.getUser(userId);
     if (!user) throw new Error("User not found");
-    
+
     const updatedUser = {
       ...user,
       points: user.points + points,
